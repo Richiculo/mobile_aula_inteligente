@@ -1,3 +1,5 @@
 # mobile_aula_inteligente
 
-A new Flutter project.
+en consola correr para dependencias: flutter pub get
+
+
