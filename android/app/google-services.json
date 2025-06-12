@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "947328377732",
+    "project_id": "notificaciones-push-30569",
+    "storage_bucket": "notificaciones-push-30569.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947328377732:android:53bf98f33e2f0d951f73d1",
+        "android_client_info": {
+          "package_name": "com.example.mobile_aula_inteligente"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo-8mzjSJFha8v3CVuk6PkLbimZOycPAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -53,4 +53,17 @@ class AuthService {
       return null;
     }
   }
+
+  Future<void> enviarFcmToken(String fcmToken, String token) async {
+    final dio = Dio();
+    try {
+      await dio.post(
+        '$baseUrl/usuarios/guardar-fcm-token/',
+        data: {'fcm_token': fcmToken},
+        options: Options(headers: {'Authorization': 'Token $token'}),
+      );
+    } catch (e) {
+      print('Error al enviar FCM token: $e');
+    }
+  }
 }

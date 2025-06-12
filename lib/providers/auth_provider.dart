@@ -1,6 +1,7 @@
 import '../services/auth_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 
 class AuthProvider with ChangeNotifier {
   final _storage = const FlutterSecureStorage();
@@ -47,9 +48,37 @@ class AuthProvider with ChangeNotifier {
       _token = data['token'];
       _user = data['user'];
       await _storage.write(key: 'token', value: _token);
+      await _storage.write(key: 'user', value: jsonEncode(_user));
       notifyListeners();
       return true;
     }
     return false;
+  }
+
+  Future<void> logout() async {
+    _token = null;
+    _user = null;
+    await _storage.delete(key: 'token');
+    notifyListeners();
+  }
+
+  Future<void> tryAutoLogin() async {
+    final storedToken = await _storage.read(key: 'token');
+    final storedUser = await _storage.read(key: 'user');
+
+    if (storedToken != null && storedUser != null) {
+      _token = storedToken;
+      _user = jsonDecode(storedUser);
+    }
+
+    _loading = false;
+    notifyListeners();
+  }
+
+  Future<void> enviarFcmToken(String fcmToken) async {
+    final token = await _storage.read(key: 'token');
+    if (token == null) return;
+
+    await _authService.enviarFcmToken(fcmToken, token);
   }
 }

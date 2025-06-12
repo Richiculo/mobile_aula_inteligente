@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'profesor_main_page.dart';
+import './alumno_main_page.dart';
+import './padre_main_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,7 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool _loading = false;
   String? _error;
-  bool _loginExitoso = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +115,40 @@ class _LoginPageState extends State<LoginPage> {
                                     _loading = false;
                                   });
                                 } else {
-                                  setState(() {
-                                    _loading = false;
-                                    _loginExitoso = true;
-                                  });
+                                  final tipoUsuario =
+                                      authProvider.user?['tipo_usuario'];
+
+                                  if (!mounted) return;
+
+                                  if (tipoUsuario == 'prof') {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (_) => const ProfesorMainPage(),
+                                      ),
+                                    );
+                                  } else if (tipoUsuario == 'alum') {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const AlumnoMainPage(),
+                                      ), // vista del alumno
+                                    );
+                                  } else if (tipoUsuario == 'padre') {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const PadreMainPage(),
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Rol no reconocido'),
+                                      ),
+                                    );
+                                  }
                                 }
                               },
                       style: ElevatedButton.styleFrom(
