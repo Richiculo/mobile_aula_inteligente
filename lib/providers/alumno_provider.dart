@@ -34,6 +34,7 @@ class AlumnoProvider with ChangeNotifier {
   }
 
   Future<void> cargarAlumnos(int mgcId) async {
+    assert(_gestionSeleccionada != null, 'Falta gestión seleccionada');
     _loading = true;
     notifyListeners();
 
@@ -45,6 +46,7 @@ class AlumnoProvider with ChangeNotifier {
             alumnoId: alumno['id'],
             materiaId: _materiaIdActual!,
             gestionCursoId: _gestionCursoIdActual!,
+            gestionId: _gestionSeleccionada!,
           );
 
           if (nota != null) {
@@ -130,11 +132,13 @@ class AlumnoProvider with ChangeNotifier {
     required int alumnoId,
     required int materiaId,
     required int gestionCursoId,
+    required int gestionId,
   }) async {
     return await _alumnoServices.getNotaAlumno(
       alumnoId: alumnoId,
       materiaId: materiaId,
       gestionCursoId: gestionCursoId,
+      gestionId: gestionId,
     );
   }
 
@@ -175,7 +179,11 @@ class AlumnoProvider with ChangeNotifier {
   Map<String, dynamic>? get resumenDashboard => _resumenDashboard;
 
   Future<void> cargarResumenDashboard() async {
-    final data = await _alumnoServices.getResumenDashboard();
+    if (_gestionSeleccionada == null) return;
+
+    final data = await _alumnoServices.getResumenDashboard(
+      _gestionSeleccionada!,
+    );
     if (data != null) {
       _resumenDashboard = data;
       notifyListeners();

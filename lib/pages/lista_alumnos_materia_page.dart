@@ -240,10 +240,19 @@ class _ListaAlumnosMateriaPageState extends State<ListaAlumnosMateriaPage> {
                             context,
                             listen: false,
                           );
+                          if (alumnoProvider.gestionSeleccionada == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Seleccioná una gestión primero'),
+                              ),
+                            );
+                            return;
+                          }
                           final nota = await alumnoProvider.obtenerNotaDeAlumno(
                             alumnoId: alumno['id'],
                             materiaId: widget.materiaId,
                             gestionCursoId: widget.gestionCursoId,
+                            gestionId: alumnoProvider.gestionSeleccionada!,
                           );
                           if (!context.mounted) return;
                           mostrarDialogoDetalleNota(context, alumno, nota);

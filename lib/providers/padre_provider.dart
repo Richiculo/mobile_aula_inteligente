@@ -40,6 +40,7 @@ class PadreProvider with ChangeNotifier {
           alumnoId: alumnoId,
           materiaId: materia['materia_id'],
           gestionCursoId: materia['gestion_curso_id'],
+          gestionId: gestionId,
         );
 
         if (nota != null) {
@@ -68,11 +69,13 @@ class PadreProvider with ChangeNotifier {
     required int alumnoId,
     required int materiaId,
     required int gestionCursoId,
+    required int gestionId,
   }) async {
     _notaDetalle = await _service.getNotaHijo(
       alumnoId: alumnoId,
       materiaId: materiaId,
       gestionCursoId: gestionCursoId,
+      gestionId: gestionId,
     );
     notifyListeners();
   }
@@ -96,8 +99,11 @@ class PadreProvider with ChangeNotifier {
   Map<String, dynamic>? get dashboardResumen => _dashboardResumen;
   List<Map<String, dynamic>> get prediccionNotas => _prediccionNotas;
 
-  Future<void> cargarResumenDashboard() async {
-    final data = await _service.getResumenDashboardPadre();
+  Future<void> cargarResumenDashboard(int gestionId, int alumnoId) async {
+    final data = await _service.getResumenDashboardPadre(
+      gestionId: gestionId,
+      alumnoId: alumnoId,
+    );
     if (data != null) {
       _dashboardResumen = data;
       notifyListeners();

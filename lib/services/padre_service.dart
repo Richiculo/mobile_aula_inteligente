@@ -29,6 +29,7 @@ class PadreService {
     required int alumnoId,
     required int materiaId,
     required int gestionCursoId,
+    required int gestionId,
   }) async {
     try {
       final token = await _storage.read(key: 'token');
@@ -38,6 +39,7 @@ class PadreService {
           'alumno_id': alumnoId,
           'materia_id': materiaId,
           'gestion_curso_id': gestionCursoId,
+          'gestion_id': gestionId,
         },
         options: Options(headers: {'Authorization': 'Token $token'}),
       );
@@ -52,6 +54,7 @@ class PadreService {
     required int alumnoId,
     required int materiaId,
     required int gestionCursoId,
+    required int gestionId,
   }) async {
     try {
       final token = await _storage.read(key: 'token');
@@ -61,6 +64,7 @@ class PadreService {
           'alumno_id': alumnoId,
           'materia_id': materiaId,
           'gestion_curso_id': gestionCursoId,
+          'gestion_id': gestionId,
         },
         options: Options(headers: {'Authorization': 'Token $token'}),
       );
@@ -76,6 +80,7 @@ class PadreService {
     required int alumnoId,
     required int materiaId,
     required int gestionCursoId,
+    required int gestionId,
   }) async {
     try {
       final token = await _storage.read(key: 'token');
@@ -85,6 +90,7 @@ class PadreService {
           'alumno_id': alumnoId,
           'materia_id': materiaId,
           'gestion_curso_id': gestionCursoId,
+          'gestion_id': gestionId,
         },
         options: Options(headers: {'Authorization': 'Token $token'}),
       );
@@ -112,11 +118,15 @@ class PadreService {
     return null;
   }
 
-  Future<Map<String, dynamic>?> getResumenDashboardPadre() async {
+  Future<Map<String, dynamic>?> getResumenDashboardPadre({
+    required int gestionId,
+    required int alumnoId,
+  }) async {
     try {
       final token = await _storage.read(key: 'token');
       final res = await _dio.get(
         '$baseUrl/alumnos/vista-padre/dashboard/',
+        queryParameters: {'alumno_id': alumnoId, 'gestion_id': gestionId},
         options: Options(headers: {'Authorization': 'Token $token'}),
       );
       if (res.statusCode == 200) return res.data;

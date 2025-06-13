@@ -2,6 +2,8 @@ import '../services/auth_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
+import 'package:dio/dio.dart';
+import '../config/api_config.dart';
 
 class AuthProvider with ChangeNotifier {
   final _storage = const FlutterSecureStorage();
@@ -66,9 +68,31 @@ class AuthProvider with ChangeNotifier {
     final storedToken = await _storage.read(key: 'token');
     final storedUser = await _storage.read(key: 'user');
 
-    if (storedToken != null && storedUser != null) {
-      _token = storedToken;
-      _user = jsonDecode(storedUser);
+    if (storedToken == null || storedUser == null) {
+      _token = null;
+      _user = null;
+      _loading = false;
+      notifyListeners();
+      return;
+    }
+
+    // Validamos si el token sigue siendo válido haciendo una prueba real
+    try {
+      final response = await Dio().get(
+        '$baseUrl/alumnos/vista-alumno/dashboard/', // o un endpoint que sea liviano y seguro
+        options: Options(headers: {'Authorization': 'Token $storedToken'}),
+      );
+
+      if (response.statusCode == 200) {
+        _token = storedToken;
+        _user = jsonDecode(storedUser);
+      } else {
+        // Token inválido, se borra
+        await logout();
+      }
+    } catch (e) {
+      // Error de red o token inválido
+      await logout();
     }
 
     _loading = false;

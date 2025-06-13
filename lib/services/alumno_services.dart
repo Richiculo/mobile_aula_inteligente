@@ -139,6 +139,7 @@ class AlumnoServices {
     required int alumnoId,
     required int materiaId,
     required int gestionCursoId,
+    required int gestionId,
   }) async {
     try {
       final token = await _storage.read(key: 'token');
@@ -148,6 +149,7 @@ class AlumnoServices {
           'alumno_id': alumnoId,
           'materia_id': materiaId,
           'gestion_curso_id': gestionCursoId,
+          'gestion_id': gestionId,
         },
         options: Options(headers: {'Authorization': 'Token $token'}),
       );
@@ -242,11 +244,12 @@ class AlumnoServices {
     return null;
   }
 
-  Future<Map<String, dynamic>?> getResumenDashboard() async {
+  Future<Map<String, dynamic>?> getResumenDashboard(int gestionId) async {
     try {
       final token = await _storage.read(key: 'token');
       final response = await _dio.get(
         '$baseUrl/alumnos/vista-alumno/dashboard/',
+        queryParameters: {'gestion_id': gestionId},
         options: Options(headers: {'Authorization': 'Token $token'}),
       );
       if (response.statusCode == 200) {

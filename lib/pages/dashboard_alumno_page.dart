@@ -23,8 +23,10 @@ class _DashboardAlumnoPageState extends State<DashboardAlumnoPage> {
       final provider = Provider.of<AlumnoProvider>(context, listen: false);
       const gestionId = 1;
       provider.setGestionSeleccionada(gestionId);
-      provider.cargarResumenDashboard();
-      provider.cargarPrediccionRendimiento(gestionId);
+      Future.delayed(const Duration(milliseconds: 100), () {
+        provider.cargarResumenDashboard();
+        provider.cargarPrediccionRendimiento(gestionId);
+      });
     });
   }
 

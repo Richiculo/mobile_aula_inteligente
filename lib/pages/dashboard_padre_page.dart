@@ -37,7 +37,7 @@ class _DashboardPadrePageState extends State<DashboardPadrePage> {
   void _cargarDatos() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<PadreProvider>(context, listen: false);
-      provider.cargarResumenDashboard();
+      provider.cargarResumenDashboard(widget.gestionId, widget.alumnoId);
       provider.cargarPrediccionRendimiento(widget.alumnoId, widget.gestionId);
     });
   }
