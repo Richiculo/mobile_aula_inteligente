@@ -201,15 +201,7 @@ class AlumnoProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> registrarAsistenciaConQr({
-    required int materiaId,
-    required int gestionCursoId,
-    required String fecha,
-  }) async {
-    return await _alumnoServices.registrarAsistenciaConQr(
-      materiaId: materiaId,
-      gestionCursoId: gestionCursoId,
-      fecha: fecha,
-    );
+  Future<bool> registrarAsistenciaConQr(String qrData) async {
+    return await _alumnoServices.registrarAsistenciaConQr(qrData);
   }
 }

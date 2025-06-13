@@ -279,20 +279,12 @@ class AlumnoServices {
     return [];
   }
 
-  Future<bool> registrarAsistenciaConQr({
-    required int materiaId,
-    required int gestionCursoId,
-    required String fecha,
-  }) async {
+  Future<bool> registrarAsistenciaConQr(String qrData) async {
     try {
       final token = await _storage.read(key: 'token');
       final res = await _dio.post(
-        '$baseUrl/alumnos/registrar-asistencia-con-qr/',
-        data: {
-          'materia_id': materiaId,
-          'gestion_curso_id': gestionCursoId,
-          'fecha': fecha,
-        },
+        '$baseUrl/alumnos/vista-alumno/registrar-asistencia-qr/',
+        data: {'qr_data': qrData},
         options: Options(headers: {'Authorization': 'Token $token'}),
       );
       return res.statusCode == 200;
